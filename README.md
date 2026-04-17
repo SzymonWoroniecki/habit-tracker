@@ -188,4 +188,4 @@ Testy uruchamiają się automatycznie w CI na każdym pushu — zobacz [Actions]
 
 ## Szymon Woroniecki
 
-Projekt portfolio — nauka Spring Boot.
+Projekt portfolio — nauka Spring Boot (JPA, Flyway, Security, testy, CI/CD).

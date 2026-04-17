@@ -1,7 +1,7 @@
 [![CI](https://github.com/SzymonWoroniecki/habit-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonWoroniecki/habit-tracker/actions/workflows/ci.yml)
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
-
+[![Tests](https://img.shields.io/badge/tests-15%20passing-success.svg)](https://github.com/SzymonWoroniecki/habit-tracker/actions)
 
 # Habit Tracker API
 
@@ -145,15 +145,47 @@ Obliczanie **aktualnej serii** obsługuje następujące przypadki:
 
 **Completion rate** jest cappowany do 100% i bierze pod uwagę najwcześniejszy wpis (nie tylko datę utworzenia nawyku) — pozwala to na poprawne statystyki gdy user odhacza dni wcześniejsze niż utworzenie nawyku w systemie.
 
+## Testing
+
+Projekt ma 15 testów pokrywających kluczowe części:
+
+### Unit tests (`HabitServiceTest`) — 8 testów
+Testy logiki biznesowej bez uruchamiania Springa. Sprawdzają edge cases w obliczaniu serii:
+- Pusta lista wpisów → streak 0
+- Trzy dni z rzędu włącznie z dzisiaj → streak 3
+- Brak wpisu dziś, ale wczoraj wykonane → **"dzień łaski"**, streak liczony od wczoraj
+- Dwudniowa luka → streak = 0
+- Niezaznaczone wpisy ignorowane
+- Najdłuższy streak historyczny (nie tylko aktualny)
+
+### Integration tests (`HabitControllerIntegrationTest`) — 7 testów
+Testy REST API z użyciem `@SpringBootTest` + `MockMvc`. Podnoszą pełen kontekst Springa i testują przepływy HTTP end-to-end przeciw bazie H2 in-memory:
+- `GET /api/habits` na pustej bazie zwraca `[]`
+- `POST /api/habits` zwraca 201 z lokalizacją
+- Walidacja pustego `name` zwraca 400 z opisem błędu
+- Nieautoryzowany request zwraca 401
+- Nieistniejący habit → 404
+- Check-in bez body używa dzisiejszej daty
+- Statystyki świeżego habita zwracają same zera
+
+### Uruchomienie
+
+```bash
+mvn test                    # wszystkie testy
+mvn test -Dtest=HabitServiceTest    # tylko unity
+```
+
+Testy uruchamiają się automatycznie w CI na każdym pushu — zobacz [Actions](https://github.com/SzymonWoroniecki/habit-tracker/actions).
+
 ## Co następnie (roadmap)
 
-- [ ] Testy jednostkowe dla logiki streaków (JUnit 5 + AssertJ)
-- [ ] Testy integracyjne MockMvc dla kontrolera
-- [ ] GitHub Actions CI (build + testy na każdym PR)
+- [X] Testy jednostkowe dla logiki streaków (JUnit 5 + AssertJ)
+- [X] Testy integracyjne MockMvc dla kontrolera
+- [X] GitHub Actions CI (build + testy na każdym PR)
 - [ ] Docker + docker-compose (Postgres + aplikacja)
 - [ ] JWT zamiast Basic Auth
 - [ ] Frontend (React) — oddzielne repo
 
-## Autor
+## Szymon Woroniecki
 
 Projekt portfolio — nauka Spring Boot.

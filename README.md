@@ -1,3 +1,8 @@
+[![CI](https://github.com/SzymonWoroniecki/habit-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/SzymonWoroniecki/habit-tracker/actions/workflows/ci.yml)
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-brightgreen.svg)](https://spring.io/projects/spring-boot)
+
+
 # Habit Tracker API
 
 REST API do śledzenia codziennych nawyków. Projekt portfolio demonstrujący pracę z ekosystemem Spring Boot, PostgreSQL, migracjami bazy danych i logiką biznesową (obliczanie serii odhaczeń, statystyk).
